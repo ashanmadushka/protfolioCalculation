@@ -46,6 +46,12 @@ const readJsonFile = (functionType, token = null, date = null, dateTimeStampStar
     let allTokenObject = {};
     let portfolioObject = {portfolioValue: 0};
 
+    if (!fs.existsSync('./transactions.json')) {
+        errorLog(`transactions.json file not exists.`);
+        usage();
+        return true;
+    } 
+
     const stream = fs.createReadStream('./transactions.json', {flags: 'r', encoding: 'utf-8'});
 
     stream.pipe(JSONStream.parse('*'))
@@ -92,7 +98,7 @@ const readJsonFile = (functionType, token = null, date = null, dateTimeStampStar
                 } 
         }
         
-        console.log('count', i)
+        console.log('item count read', i)
         i++;
     }).on("end", async() => {
         switch (functionType) {
